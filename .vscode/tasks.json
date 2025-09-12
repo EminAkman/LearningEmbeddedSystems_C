@@ -1,0 +1,9 @@
+{
+    "label": "build all",
+    "type": "shell",
+    "command": "clang -g src/*.c -Iinclude -o .vscode/main.exe",
+    "group": {
+        "kind": "build",
+        "isDefault": true
+    }
+}
