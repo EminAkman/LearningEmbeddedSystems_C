@@ -2,19 +2,22 @@
 #define FILTER
 
 #include <stdlib.h>
+#include <enums.h>
 
 typedef struct Filter Filter;
+typedef struct FilterVtable FilterVtable;
 
-typedef struct 
+typedef struct Filter
+{
+    FilterVtable* vtable;
+
+}Filter;
+
+typedef struct FilterVtable
 {
     float (*apply)(Filter* self, float value);
 }FilterVtable;
 
-struct Filter
-{
-
-    const FilterVtable* vtable;
-
-}FilterVTable;
+Filter* createFilter(FilterType type);
 
 #endif 

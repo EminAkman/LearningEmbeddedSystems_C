@@ -1,4 +1,5 @@
 #include "manager.h"
+#include "enums.h"
 #include "sensor.h"
 #include "mesafe_sens.h"
 #include "temp_sensor.h"
