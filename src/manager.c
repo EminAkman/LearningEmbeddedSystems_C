@@ -88,3 +88,11 @@ SensorError destroy_all(SensorManger* manager)
     return SENSOR_OK;
 
 }
+
+SensorError set_callback(SensorManger* manager, int id, CallbackType* cb)
+{
+
+    manager->sensors[id]->callback = cb;
+    return SENSOR_OK;
+
+}

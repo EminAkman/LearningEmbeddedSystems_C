@@ -3,41 +3,76 @@
 #include <stdio.h>
 
 typedef struct {
-    Sensor base;        // Inheritance by composition
+    Sensor base;        
     float currentDistance;
 } MesafeSensor;
 
-static SensorError mesafeSens_Init(Sensor* self) {
+static SensorError mesafeSens_Init(Sensor* self) 
+{
+
     MesafeSensor* ms = (MesafeSensor*) self;
     ms->currentDistance = 2;  
+
     return SENSOR_OK;
 }
 
-static SensorError mesafeSens_Read(Sensor* self, float* distance){
-    MesafeSensor* ms = (MesafeSensor*) self;
-    ms->currentDistance += ((rand() % 100) / 100.0f) - 0.5f;
-    ms->base.filter->vtable->apply(ms->base.filter, *distance);
-    printf("Sensor bir %s sensorudur. %s filtresinden gecirilmistir ve mesafe: %f m'dir. ID'si : %d'dir.\n",ms->base.name,ms->base.filter->name,ms->currentDistance, ms->base.ID);
-    *distance = ms->currentDistance;
+static SensorError mesafeSens_Read(Sensor* self, float* value) 
+{
+
+    MesafeSensor* ms = (MesafeSensor*)self;
+    ms->currentDistance += ((rand()%100)/100.0f) - 0.5f;
+    *value = ms->currentDistance;
+
+    if(ms->base.filter)
+    {
+        *value = ms->base.filter->vtable->apply(ms->base.filter, *value);
+        printf("Sensor bir %s sensorudur. %s filtresinden gecirilmistir ve mesafe: %f m'dir. ID'si : %d'dir.\n",
+        ms->base.name,ms->base.filter->name,ms->currentDistance, ms->base.ID);
+        if(ms->base.callback) check_Mesafe_Sens_Callback(self);
+    }
+
     return SENSOR_OK;
 }
 
-static SensorError mesafeSens_Calibrate(Sensor* self){
+
+static SensorError mesafeSens_Calibrate(Sensor* self)
+{
+
     return SENSOR_OK;
 }
 
-static void mesafeSens_Destroy(Sensor* self){
+static void mesafeSens_Destroy(Sensor* self)
+{
     free(self);
 }
 
-static SensorVTable mesafeSens_Vtable = {
+void check_Mesafe_Sens_Callback(Sensor* self)
+{
+
+    MesafeSensor* ms = (MesafeSensor*) self;
+    
+    for (int i = 0; i < sizeof(CallbackType) / 4; i++)
+    {
+        if (ms->base.callback == typeVerify && ms->currentDistance == *ms->base.tresholdcallback)
+        {
+            printf("Uyari sensor %f esik degerini asti!!!\n", ms->base.tresholdcallback);
+        }        
+    }
+}
+
+static SensorVTable mesafeSens_Vtable = 
+{
+
     .init = mesafeSens_Init,
     .read = mesafeSens_Read,
     .calibrate = mesafeSens_Calibrate,
     .destroy = mesafeSens_Destroy,
+    .checkCallback = check_Mesafe_Sens_Callback,
 };
 
-Sensor* CreateMesafeSens() {
+Sensor* CreateMesafeSens() 
+{
+
     MesafeSensor* Ms = malloc(sizeof(MesafeSensor));
     if (!Ms) return NULL;
     Ms->currentDistance = 0;
@@ -46,5 +81,7 @@ Sensor* CreateMesafeSens() {
     SensorID++;
     Ms->base.ID = SensorID;
     Ms->base.filter = createFilter(typeNoFilter);
+    Ms->base.callback = typeNoCallback;
+
     return (Sensor*)Ms;
 }

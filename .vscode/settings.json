@@ -2,6 +2,10 @@
     "files.associations": {
         "sensor.h": "c",
         "stdlib.h": "c",
-        "typeinfo": "c"
+        "typeinfo": "c",
+        "bit": "c",
+        "limits": "c",
+        "type_traits": "c",
+        "stdio.h": "c"
     }
 }

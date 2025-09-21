@@ -17,4 +17,10 @@ typedef enum
     SENSOR_ERROR = 1,
 } SensorError;
 
+typedef enum
+{
+    typeNoCallback = 0,
+    typeVerify = 1,
+} CallbackType;
+
 #endif

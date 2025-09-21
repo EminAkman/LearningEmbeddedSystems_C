@@ -5,22 +5,29 @@
 #include <filter.h>
 #include <enums.h>
 
-extern int SensorID;
-
 typedef struct Sensor Sensor;
 
-typedef struct {
-    SensorError (*init)(Sensor* self);
-    SensorError (*read)(Sensor* self, float* value);
-    SensorError (*calibrate)(Sensor* self);
-    void (*destroy)(Sensor* self);
+typedef struct
+{
+
+    SensorError (*init)(Sensor *self);
+    SensorError (*read)(Sensor *self, float *value);
+    SensorError (*calibrate)(Sensor *self);
+    void (*destroy)(Sensor *self);
+    void (*checkCallback)(Sensor *self, float value);
+
 } SensorVTable;
 
-struct Sensor {
-    const SensorVTable* vtable;  
-    const char* name;
+struct Sensor
+{
+    const SensorVTable *vtable;
+    const char *name;
     int ID;
-    Filter* filter;
+    Filter *filter;
+    CallbackType *callback;
+    float *tresholdcallback;
 };
 
-#endif 
+extern int SensorID;
+
+#endif
