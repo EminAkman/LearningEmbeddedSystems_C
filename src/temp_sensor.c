@@ -1,6 +1,7 @@
 #include "sensor.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 // İç yapı (opaque pointer için)
 typedef struct {
@@ -20,7 +21,8 @@ static SensorError temp_read(Sensor* self, float* value) {
     // Simülasyon: random değer üret
     ts->currentTemp += ((rand() % 100) / 100.0f) - 0.5f;
     *value = ts->currentTemp;
-    printf("Sensor bir %s sensorudur. Ve derece: %f C'dir. ID'si : %d'dir.\n",ts->base.name,ts->currentTemp, ts->base.ID);
+    ts->base.filter->vtable->apply(ts->base.filter, *value);
+    printf("Sensor bir %s sensorudur. %s filtresinden gecirilmistir ve derece: %f C'dir. ID'si : %d'dir.\n",ts->base.name,ts->base.filter->name,ts->currentTemp, ts->base.ID);
     return SENSOR_OK;
 }
 
@@ -49,5 +51,6 @@ Sensor* TempSensor_create() {
     ts->currentTemp = 0.0f;
     SensorID++;
     ts->base.ID = SensorID;
+    ts->base.filter = createFilter(typeNoFilter); 
     return (Sensor*)ts;
 }

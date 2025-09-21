@@ -20,7 +20,7 @@ struct Sensor {
     const SensorVTable* vtable;  
     const char* name;
     int ID;
-    Filter filter;
+    Filter* filter;
 };
 
 #endif 

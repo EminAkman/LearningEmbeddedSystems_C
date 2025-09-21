@@ -16,9 +16,9 @@ static SensorError mesafeSens_Init(Sensor* self) {
 static SensorError mesafeSens_Read(Sensor* self, float* distance){
     MesafeSensor* ms = (MesafeSensor*) self;
     ms->currentDistance += ((rand() % 100) / 100.0f) - 0.5f;
-    *distance = ms->currentDistance; 
-    float filteredDistance = ms->base.filter.vtable->apply(&ms->base.filter,*distance);
-    printf("Sensor bir %s sensorudur. Ve mesafesi: %f m'dir. ID'si : %d'dir.\n",ms->base.name,ms->currentDistance, ms->base.ID);
+    ms->base.filter->vtable->apply(ms->base.filter, *distance);
+    printf("Sensor bir %s sensorudur. %s filtresinden gecirilmistir ve mesafe: %f m'dir. ID'si : %d'dir.\n",ms->base.name,ms->base.filter->name,ms->currentDistance, ms->base.ID);
+    *distance = ms->currentDistance;
     return SENSOR_OK;
 }
 
@@ -45,5 +45,6 @@ Sensor* CreateMesafeSens() {
     Ms->base.vtable = &mesafeSens_Vtable;
     SensorID++;
     Ms->base.ID = SensorID;
+    Ms->base.filter = createFilter(typeNoFilter);
     return (Sensor*)Ms;
 }

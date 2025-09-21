@@ -10,7 +10,7 @@ typedef struct FilterVtable FilterVtable;
 typedef struct Filter
 {
     FilterVtable* vtable;
-
+    const char* name;
 }Filter;
 
 typedef struct FilterVtable
