@@ -7,7 +7,10 @@ SensorManger manager;
 
 int main() {
     
-    
+
+
+
+    /*
     manager_add_sensor(&manager,12);
     printf("Toplam Sensor Sayisi : %d\n",SensorID);
     init_all(&manager);
@@ -15,6 +18,8 @@ int main() {
     calibrate_all(&manager);
     read_all(&manager);
     destroy_all(&manager);
+    
+    */
 
     return 0;
 }

@@ -2,6 +2,7 @@
 #define SENSOR_H
 
 #include <stdint.h>
+#include <filter.h>
 
 // Hata kodları
 typedef enum {
@@ -27,6 +28,7 @@ struct Sensor {
     const SensorVTable* vtable;  // Pointer to function table
     const char* name;
     int ID;
+    Filter filter;
 };
 
 #endif // SENSOR_H
