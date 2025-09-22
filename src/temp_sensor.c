@@ -22,8 +22,9 @@ static SensorError temp_read(Sensor* self, float* value) {
     {
         *value = ts->base.filter->vtable->apply(ts->base.filter, *value);
 
-        printf("Sensor bir %s sensorudur. %s filtresinden gecirilmistir ve mesafe: %f m'dir. ID'si : %d'dir.\n",
+        printf("Sensor bir %s sensorudur. %s filtresinden gecirilmistir ve mesafe: %f C'dir. ID'si : %d'dir.\n",
         ts->base.name,ts->base.filter->name,ts->currentTemp, ts->base.ID);
+        ts->base.vtable->checkCallback(self);
     }
 
     return SENSOR_OK;
@@ -40,10 +41,11 @@ static void temp_destroy(Sensor* self) {
 
 static void temp_check_callback(Sensor* self) {
     TempSensor* ts = (TempSensor*)self;
-    
+    printf("Check ediliyor.\n");
+    //printf("Treshold degeri: %f, sıcaklık: %f \n", ts->base.tresholdcallback, ts->currentTemp);
     for (int i = 0; i < sizeof(CallbackType) / 4; i++)
     {
-        if (ts->base.callback == typeVerify && ts->currentTemp == *ts->base.tresholdcallback)
+        if (ts->base.callback == typeVerify && ts->currentTemp > ts->base.tresholdcallback)
         {
             printf("Uyari sensor %f esik degerini asti!!!", ts->base.tresholdcallback);
         }        
@@ -68,5 +70,6 @@ Sensor* TempSensor_create() {
     ts->base.callback = typeNoCallback;
     SensorID++;
     ts->base.ID = SensorID;
+    ts->base.tresholdcallback = 0.0;
     return (Sensor*)ts;
 }

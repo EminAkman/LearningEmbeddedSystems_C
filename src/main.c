@@ -18,8 +18,13 @@ int main() {
     /////// TEST CODE FOR SENSOR CALLBACK ///////
     /////////////////////////////////////////////
 
+    read_all(&manager);
+
+    set_callback(&manager,0,typeVerify);
     set_callback(&manager,1,typeVerify);
-    manager.sensors[1]->tresholdcallback = 25;
+    manager.sensors[0]->tresholdcallback = 25.0;
+    manager.sensors[1]->tresholdcallback = 25.0;
+    read_all(&manager);
 
     
     /*

@@ -1,4 +1,5 @@
 #include "sensor.h"
+#include "mesafe_sens.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -6,6 +7,8 @@ typedef struct {
     Sensor base;        
     float currentDistance;
 } MesafeSensor;
+
+
 
 static SensorError mesafeSens_Init(Sensor* self) 
 {
@@ -28,7 +31,7 @@ static SensorError mesafeSens_Read(Sensor* self, float* value)
         *value = ms->base.filter->vtable->apply(ms->base.filter, *value);
         printf("Sensor bir %s sensorudur. %s filtresinden gecirilmistir ve mesafe: %f m'dir. ID'si : %d'dir.\n",
         ms->base.name,ms->base.filter->name,ms->currentDistance, ms->base.ID);
-        if(ms->base.callback) check_Mesafe_Sens_Callback(self);
+        if(ms->base.callback == typeVerify) check_Mesafe_Sens_Callback(self);
     }
 
     return SENSOR_OK;
@@ -53,7 +56,7 @@ void check_Mesafe_Sens_Callback(Sensor* self)
     
     for (int i = 0; i < sizeof(CallbackType) / 4; i++)
     {
-        if (ms->base.callback == typeVerify && ms->currentDistance == *ms->base.tresholdcallback)
+        if (ms->base.callback == typeVerify && ms->currentDistance > ms->base.tresholdcallback)
         {
             printf("Uyari sensor %f esik degerini asti!!!\n", ms->base.tresholdcallback);
         }        
@@ -82,6 +85,7 @@ Sensor* CreateMesafeSens()
     Ms->base.ID = SensorID;
     Ms->base.filter = createFilter(typeNoFilter);
     Ms->base.callback = typeNoCallback;
+    Ms->base.tresholdcallback = 0.0;
 
     return (Sensor*)Ms;
 }

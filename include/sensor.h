@@ -14,7 +14,7 @@ typedef struct
     SensorError (*read)(Sensor *self, float *value);
     SensorError (*calibrate)(Sensor *self);
     void (*destroy)(Sensor *self);
-    void (*checkCallback)(Sensor *self, float value);
+    void (*checkCallback)(Sensor *self);
 
 } SensorVTable;
 
@@ -24,8 +24,8 @@ struct Sensor
     const char *name;
     int ID;
     Filter *filter;
-    CallbackType *callback;
-    float *tresholdcallback;
+    CallbackType callback;
+    float tresholdcallback;
 };
 
 extern int SensorID;

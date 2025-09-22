@@ -18,6 +18,6 @@ SensorError init_all(SensorManger* manager);
 SensorError calibrate_all(SensorManger* manager);
 SensorError read_all(SensorManger* manager);
 SensorError destroy_all(SensorManger* manager);
-SensorError set_callback(SensorManger* manager,int id, CallbackType* cb);
+SensorError set_callback(SensorManger* manager,int id, CallbackType cb);
 
 #endif
