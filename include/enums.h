@@ -23,4 +23,13 @@ typedef enum
     typeVerify = 1,
 } CallbackType;
 
+typedef enum
+{
+    IDLESTATE = 0,
+    CALIBRATESTATE = 1,
+    MEASURESTATE = 2,
+    ERRORSTATE = 3,
+    INITSTATE = 4,
+} SensorState;
+
 #endif

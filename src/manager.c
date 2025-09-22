@@ -96,3 +96,38 @@ SensorError set_callback(SensorManger* manager, int id, CallbackType cb)
     return SENSOR_OK;
 
 }
+
+SensorError read_all_state(SensorManger* manager)
+{
+
+    for (int i = 0; i < SensorID; i++)
+    {
+        if (manager->sensors[i]->sensorstate == IDLESTATE)
+        {
+            printf("%s turundeki %d ID'li sensorun statesi: IDLESTATE. \n"
+                ,manager->sensors[i]->name, manager->sensors[i]->ID);
+        }
+        if (manager->sensors[i]->sensorstate == CALIBRATESTATE)
+        {
+            printf("%s turundeki %d ID'li sensorun statesi: CALIBRATESTATE. \n"
+                ,manager->sensors[i]->name, manager->sensors[i]->ID);
+        }
+        if (manager->sensors[i]->sensorstate == MEASURESTATE)
+        {
+            printf("%s turundeki %d ID'li sensorun statesi: MEASURESTATE. \n"
+                ,manager->sensors[i]->name, manager->sensors[i]->ID);
+        }
+        if (manager->sensors[i]->sensorstate == ERRORSTATE)
+        {
+            printf("%s turundeki %d ID'li sensorun statesi: ERRORSTATE. \n"
+                ,manager->sensors[i]->name, manager->sensors[i]->ID);
+        }
+        if (manager->sensors[i]->sensorstate == INITSTATE)
+        {
+            printf("%s turundeki %d ID'li sensorun statesi: INITSTATE. \n"
+                ,manager->sensors[i]->name, manager->sensors[i]->ID);
+        }
+    }
+    
+    return SENSOR_OK;
+}

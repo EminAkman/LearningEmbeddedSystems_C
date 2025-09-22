@@ -15,6 +15,7 @@ static SensorError mesafeSens_Init(Sensor* self)
 
     MesafeSensor* ms = (MesafeSensor*) self;
     ms->currentDistance = 2;  
+    self->sensorstate = INITSTATE;
 
     return SENSOR_OK;
 }
@@ -26,6 +27,8 @@ static SensorError mesafeSens_Read(Sensor* self, float* value)
     ms->currentDistance += ((rand()%100)/100.0f) - 0.5f;
     *value = ms->currentDistance;
 
+    self->sensorstate = MEASURESTATE;
+
     if(ms->base.filter)
     {
         *value = ms->base.filter->vtable->apply(ms->base.filter, *value);
@@ -34,13 +37,14 @@ static SensorError mesafeSens_Read(Sensor* self, float* value)
         if(ms->base.callback == typeVerify) check_Mesafe_Sens_Callback(self);
     }
 
+    self->sensorstate = IDLESTATE;
     return SENSOR_OK;
 }
 
 
 static SensorError mesafeSens_Calibrate(Sensor* self)
 {
-
+    self->sensorstate = CALIBRATESTATE;
     return SENSOR_OK;
 }
 
@@ -86,6 +90,7 @@ Sensor* CreateMesafeSens()
     Ms->base.filter = createFilter(typeNoFilter);
     Ms->base.callback = typeNoCallback;
     Ms->base.tresholdcallback = 0.0;
+    Ms->base.sensorstate = IDLESTATE;
 
     return (Sensor*)Ms;
 }

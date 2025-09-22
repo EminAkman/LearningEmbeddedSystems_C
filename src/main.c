@@ -13,7 +13,15 @@ int main() {
     printf("Tum Sensorler Baslatildi\n");
     calibrate_all(&manager);
 
+    /////////////////////////////////////////////
+    /////////// TEST CODE FOR STATE  ////////////
+    /////////////////////////////////////////////
 
+    read_all(&manager);
+    read_all_state(&manager);
+
+    /*
+    
     /////////////////////////////////////////////
     /////// TEST CODE FOR SENSOR CALLBACK ///////
     /////////////////////////////////////////////
@@ -25,7 +33,10 @@ int main() {
     manager.sensors[0]->tresholdcallback = 25.0;
     manager.sensors[1]->tresholdcallback = 25.0;
     read_all(&manager);
+    
+    */
 
+    
     
     /*
     
@@ -40,13 +51,10 @@ int main() {
     read_all(&manager);
     read_all(&manager);
     read_all(&manager);
+
+    */ 
+
     destroy_all(&manager);
-
-    */
-    
-
-    
-    
     
     return 0;
 }

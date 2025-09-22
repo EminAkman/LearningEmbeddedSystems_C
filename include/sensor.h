@@ -26,6 +26,8 @@ struct Sensor
     Filter *filter;
     CallbackType callback;
     float tresholdcallback;
+    SensorState sensorstate;
+
 };
 
 extern int SensorID;
